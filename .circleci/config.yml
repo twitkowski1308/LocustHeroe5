@@ -12,10 +12,12 @@ jobs:
       - python/install-deps
       - python/save-cache
       - run:
-          command: 
-          pip3 install locust
-          /usr/local/bin/locust -f locustfile.py --clients=20 --hatch-rate=1 --num-request=100 --no-web
-          name: Locust
+          command: |  # use pipenv to install dependencies
+            sudo pip install pipenv
+            pipenv install
+            pip install locust
+            locust -f locustfile.py --host https://16wm3zzum0.execute-api.eu-central-1.amazonaws.com/staging-new --headless -u 100 -r 100 --run-time 1m
+          name: Test
 
 workflows:
   main:
