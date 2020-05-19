@@ -1,5 +1,4 @@
-from locust import HttpLocust, TaskSet, between, task
-
+from locust import HttpUser, TaskSet, between, task
 class ForumPage(TaskSet):
     @task(15)
     def amount(l):
@@ -13,6 +12,6 @@ class ForumPage(TaskSet):
     def stripe(l):
         l.client.post("/create-transaction", {"email": "test@test.com", "currency": "eur", "rememberCard": "false", "campaign": "netguru-test", "amount": 6000, "stripeToken": "%fQco>Tq{Ht}A?qcLQ!426WX", "paymentMethod": "card"})
 
-class WebsiteUser(HttpLocust):
-    task_set = ForumPage
+class WebsiteUser(HttpUser):
+    tasks = [ForumPage]
     wait_time = between(5.0, 9.0)
